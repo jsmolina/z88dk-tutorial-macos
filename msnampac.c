@@ -13,7 +13,7 @@
 #include "globals.h"
 #include "int.h"
 #include "game_zx.h"
-
+#include "mssound.h"
 
 void all_lives_lost() {
 
@@ -126,8 +126,10 @@ void all_lives_lost() {
 
 int main()
 {
-  setup_int();
+  sounds_init();
 
+  setup_int();
+  intrinsic_ei();
 
   pacman.sp = add_sprite();
   pacman.alt = add_dead_prota_sprite();
