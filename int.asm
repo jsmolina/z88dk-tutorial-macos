@@ -1,7 +1,9 @@
 EXTERN _tick
 EXTERN _pick
-EXTERN _playBasic
-
+EXTERN _ambient
+EXTERN MFXINIT
+EXTERN MFXPLAYE
+EXTERN _aybank    ; defined in globals
 ;;;;;;;;;;;;;;;;;;;;;;
 ; void setup_int(void)
 ;;;;;;;;;;;;;;;;;;;;;;
@@ -14,7 +16,12 @@ PUBLIC _setup_int
 _setup_int:
 
    ; im2 table @ 0xd000
+   ; mfx stuff
+   di
+   ld hl, _aybank
+   call MFXINIT
 
+   ; int
    ld hl,0xd000
    ld de,0xd001
    ld bc,256
@@ -84,17 +91,9 @@ isr_skip:
    ld a,h
    or l
 
-   ; FX
-   ld a,(_pick)
-   or a
-   JR Z, it_was_zero  ; skip if it reaches zero
-
-   dec a              ; else decrement
-   ld (_pick),a
-   ; https://www.sounds-resource.com/nes/mspacmannamco/sound/5206/
-    call _playBasic
-
-it_was_zero:
+   ; FX frame
+   ;call MFXPLAYE
+   ; keep doing
    ld a,0xd0
    ld i,a                      ; restore I
 
